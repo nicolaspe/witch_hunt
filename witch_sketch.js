@@ -74,6 +74,18 @@ function parseData(){
 }
 function serialError(err){
 	// console.log("ERROR:",err);
+	console.log("Serial communication ERROR");
+}
+// key controls
+function keyPressed() {
+  if (keyCode === LEFT_ARROW) {
+    knob -= 10;
+  } else if (keyCode === RIGHT_ARROW) {
+    knob += 10;
+  } else if (' ') {
+  	changeAbuser();
+  }
+	knob = constrain(knob, 60, width-60);
 }
 
 // display the body, centered at (posX, posY)
