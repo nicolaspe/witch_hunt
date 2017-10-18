@@ -22,6 +22,7 @@ let bodyAnimation, bodySpeed;
 let fireHue = 30;
 let fireSat = 85;
 let fireBri = 100;
+let fireUp, fireDown;
 let moveLeft, moveRight;
 
 function preload(){
@@ -41,7 +42,6 @@ function preload(){
 
 	bodyAnimation = loadAnimation("imgs/body_001.png", "imgs/body_003.png");
 }
-
 function setup(){
 	createCanvas(860, 280);
 	noStroke();
@@ -59,23 +59,34 @@ function setup(){
 	fireHue = 30;
 	fireSat = 85;
 	fireBri = 100;
+	fireUp = false;
+	fireDown = false;
+	moveLeft = false;
+	moveRight = false;
 
 	// load and create body sprite animation
 	bodySpeed = 4;
 	bodyAnimation.frameDelay = bodySpeed;
 }
-
 function draw(){
 	background(255);
 	image(bg, width/2, height/2);
 
-	// keyboard control
+	// keyboard body control
 	if(moveLeft){
 		knob -= 6;
 	} else if (moveRight) {
 		knob += 6;
   }
 	knob = constrain(knob, 60, width-60);
+
+	// keyboard fire control
+	if (fireUp) {
+		fire_intensity += 4;
+	} else if (fireDown) {
+		fire_intensity -= 4;
+	}
+	fire_intensity = constrain(fire_intensity, 0, 100);
 
 	// change abuser
 	if (button == 1 && lastButton == 0){
@@ -113,19 +124,24 @@ function keyPressed() {
 		moveLeft  = false;
 		moveRight = true;
 	} else if (keyCode == UP_ARROW) {
-		fire_intensity += 4;
+		fireUp   = true;
+		fireDown = false;
 	} else if (keyCode == DOWN_ARROW) {
-		fire_intensity -= 4;
+		fireUp   = false;
+		fireDown = true;
 	} if (key == ' ') {
   	changeAbuser();
   }
-	fire_intensity = constrain(fire_intensity, 0, 100);
 }
 function keyReleased() {
 	if(keyCode == LEFT_ARROW){
 		moveLeft  = false;
 	} else if (keyCode == RIGHT_ARROW) {
 		moveRight = false;
+	} else if (keyCode == UP_ARROW) {
+		fireUp   = false;
+	} else if (keyCode == DOWN_ARROW) {
+		fireDown = false;
 	}
 }
 
