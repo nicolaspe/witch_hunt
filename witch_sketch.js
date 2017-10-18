@@ -6,10 +6,12 @@
 // serial communication setup
 var portName = '/dev/cu.usbmodem1421';
 var serial;
+
 // game variables
 var button = 0;
 var lastButton = 0;
 var fire_intensity = 0;
+var knob = 0;
 var faces = [];
 var body;
 
@@ -27,7 +29,7 @@ function preload(){
 	faces[9] = loadImage("imgs/9_donaldtrump.png");
 
 	// load and create body animation
-	body = loadAnimation("imgs/body_001.png", "imgs/body_003.png");
+	// body = loadAnimation("imgs/body_001.png", "imgs/body_003.png");
 }
 
 function setup(){
@@ -42,14 +44,14 @@ function setup(){
 }
 
 function draw(){
-	background(0);
+	background(knob);
 	if (button == 1 && lastButton == 0){
-		fill(255);
-		ellipse(width/2, height/2, 200);
+		fill(0);
+		ellipse(width/2, height/2, 200, 200);
 	}
+	lastButton = button;
 
-	animation(body, width/2, height/2);
-
+	// animation(body, width/2, height/2);
 }
 
 // Process incomming data
@@ -58,12 +60,13 @@ function parseData(){
 	if (inData.length > 0){
 		var values = inData.split(',');
 		// readLine() returns Strings! convert it to int to use it
-		button = int(values[0])
+		button = int(values[0]);
 		fire_intensity = map(int(values[1]), 0, 1023, 0, 100);
+		knob = map(int(values[2]), 0, 1023, 0, 255);
 	}
 }
 function serialError(err){
-	console.log("ERROR:",err);
+	// console.log("ERROR:",err);
 }
 
 function drawBody(){
