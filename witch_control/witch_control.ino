@@ -17,7 +17,6 @@ void loop() {
   // read values
   int buttonVal = digitalRead(buttonPin);
   int lightVal = analogRead(lightPin);
-//  int lightVal = 0;
   int potVal = analogRead(potPin);
 
   // calibrate light sensor
@@ -32,7 +31,4 @@ void loop() {
   Serial.print(',');
   Serial.print(potVal);
   Serial.println();
-
-  // delay for stability
-  delay(2);
 }

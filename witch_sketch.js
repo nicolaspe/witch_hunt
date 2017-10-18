@@ -70,9 +70,9 @@ function draw(){
 
 	// keyboard control
 	if(moveLeft){
-		knob -= 5;
+		knob -= 6;
 	} else if (moveRight) {
-		knob += 5;
+		knob += 6;
   }
 	knob = constrain(knob, 60, width-60);
 
