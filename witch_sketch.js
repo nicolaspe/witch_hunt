@@ -7,18 +7,21 @@
 var portName = '/dev/cu.usbmodem1421';
 var serial;
 
-// game variables
+// variable initialization
+// 		Arduino variables
 let button = 0;
 let lastButton = 0;
 let fire_intensity = 40;
-let fireHue = 30;
-let fireSat = 85;
-let fireBri = 100;
 let knob = 200;
+// 		image variables
 let bg;
 let faces = [];
 let currFace = 0;
-let bodyAnimation;
+let bodyAnimation, bodySpeed;
+//		other game variables
+let fireHue = 30;
+let fireSat = 85;
+let fireBri = 100;
 let moveLeft, moveRight;
 
 function preload(){
@@ -57,7 +60,8 @@ function setup(){
 	fireBri = 100;
 
 	// load and create body sprite animation
-	bodyAnimation.frameDelay = 10;
+	bodySpeed = 4;
+	bodyAnimation.frameDelay = bodySpeed;
 }
 
 function draw(){
@@ -131,6 +135,12 @@ function mousePressed(){
 
 // display the body, centered at (posX, posY)
 function drawBody(posX, posY){
+	// calculate body shaking
+	let distanceFire = abs(posX - 470);
+	// bodySpeed = map(distanceFire, 340, 180, 8, 2);
+	// bodySpeed = constrain(bodySpeed, 2, 8);
+	// bodyAnimation.frameDelay = bodySpeed;
+
 	// change coordinates
 	push();
 	translate(posX, posY);

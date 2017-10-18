@@ -17,6 +17,7 @@ void loop() {
   // read values
   int buttonVal = digitalRead(buttonPin);
   int lightVal = analogRead(lightPin);
+//  int lightVal = 0;
   int potVal = analogRead(potPin);
 
   // calibrate light sensor
