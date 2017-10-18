@@ -12,11 +12,14 @@ var button = 0;
 var lastButton = 0;
 var fire_intensity = 0;
 var knob = 200;
+var bg;
 var faces = [];
 var currFace = 0;
 var bodyAnimation;
 
 function preload(){
+	// load background
+	bg = loadImage("imgs/background.jpg")
 	// load faces
 	faces[0] = loadImage("imgs/0_harveyweinstein.png");
 	faces[1] = loadImage("imgs/1_woodyallen.png");
@@ -33,7 +36,7 @@ function preload(){
 }
 
 function setup(){
-	createCanvas(windowWidth, windowHeight);
+	createCanvas(860, 280);
 	noStroke();
 	imageMode(CENTER);
 
@@ -48,14 +51,14 @@ function setup(){
 }
 
 function draw(){
-	background(knob);
+	background(255);
+	image(bg, width/2, height/2);
 	if (button == 1 && lastButton == 0){
-		fill(0);
-		ellipse(width/2, height/2, 200, 200);
+		changeAbuser();
 	}
 	lastButton = button;
 
-	drawBody(mouseX, mouseY);
+	drawBody(knob, height*.6);
 }
 
 // Process incomming data
@@ -66,7 +69,7 @@ function parseData(){
 		// readLine() returns Strings! convert it to int to use it
 		button = int(values[0]);
 		fire_intensity = map(int(values[1]), 0, 1023, 0, 100);
-		knob = map(int(values[2]), 0, 1023, 0, 255);
+		knob = map(int(values[2]), 0, 1023, 60, width-60);
 	}
 }
 function serialError(err){
@@ -79,8 +82,13 @@ function drawBody(posX, posY){
 	push();
 	translate(posX, posY);
 	animation(bodyAnimation, 0, 0, 20, 20);
-	image(faces[currFace], 0, -400);
-
+	image(faces[currFace], 0, -70);
 	//return to coordinates
 	pop();
+}
+function changeAbuser(){
+	currFace++;
+	if(currFace >= faces.length){
+		currFace = 0;
+	}
 }
