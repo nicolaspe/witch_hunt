@@ -2,6 +2,8 @@
 #define lightPin A0
 #define potPin A1
 
+int minLightValue = 1023;
+int maxLightValue = 0;
 
 void setup() {
   // initialize serial communication
@@ -12,10 +14,17 @@ void setup() {
 }
 
 void loop() {
+  // read values
   int buttonVal = digitalRead(buttonPin);
   int lightVal = analogRead(lightPin);
   int potVal = analogRead(potPin);
 
+  // calibrate light sensor
+  if(lightVal < minLightValue) minLightValue = lightVal;
+  if(lightVal > maxLightValue) maxLightValue = lightVal;
+  lightVal = map(lightVal, minLightValue, maxLightValue, 0, 100);
+
+  // send data
   Serial.print(buttonVal);
   Serial.print(',');
   Serial.print(lightVal);
@@ -23,5 +32,6 @@ void loop() {
   Serial.print(potVal);
   Serial.println();
 
-  delay(1);
+  // delay for stability
+  delay(2);
 }

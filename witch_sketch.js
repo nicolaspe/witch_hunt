@@ -10,7 +10,7 @@ var serial;
 // game variables
 let button = 0;
 let lastButton = 0;
-let fire_intensity = 0;
+let fire_intensity = 40;
 let fireHue = 30;
 let fireSat = 85;
 let fireBri = 100;
@@ -66,9 +66,9 @@ function draw(){
 
 	// keyboard control
 	if(moveLeft){
-		knob -= 2;
+		knob -= 5;
 	} else if (moveRight) {
-		knob += 2;
+		knob += 5;
   }
 	knob = constrain(knob, 60, width-60);
 
@@ -90,7 +90,7 @@ function parseData(){
 		var values = inData.split(',');
 		// readLine() returns Strings! convert it to int to use it
 		button = int(values[0]);
-		fire_intensity = map(int(values[1]), 0, 1023, 0, 100);
+		fire_intensity = int(values[1]); // calibrated value (0-100)
 		knob = map(int(values[2]), 0, 1023, 60, width-60);
 	}
 }
@@ -107,9 +107,14 @@ function keyPressed() {
 	} else if (keyCode == RIGHT_ARROW) {
 		moveLeft  = false;
 		moveRight = true;
-	} else if (key == ' ') {
+	} else if (keyCode == UP_ARROW) {
+		fire_intensity += 4;
+	} else if (keyCode == DOWN_ARROW) {
+		fire_intensity -= 4;
+	} if (key == ' ') {
   	changeAbuser();
   }
+	fire_intensity = constrain(fire_intensity, 0, 100);
 }
 function keyReleased() {
 	if(keyCode == LEFT_ARROW){
@@ -145,19 +150,36 @@ function drawFire(){
 	push();
 	translate(470, 233);
 
+	// fire intensity calculations
+	let fire_iterations = int( map(fire_intensity, 0, 100, 2, 18) );
+	let fire_alpha;
+
 	// FIRE: set color
-	let fireColor = color(fireHue, fireSat, fireBri, 7);
 	noStroke();
+	let fireColor = color(fireHue, fireSat, fireBri, 7);
 	fill(fireColor);
 	// FIRE: draw overlapping
-	for (let i = 0; i < 18; i++) {
-		let x_dim = 140 + i*14;
-		let y_dim = 250 + i*16;
+	let x_dim = 140;
+	let y_dim = 250;
+	for (let i = 0; i < fire_iterations; i++) {
+		// let x_dim = 140 + i*14;
+		// let y_dim = 250 + i*16;
+		x_dim += 14;
+		y_dim += 16;
 		arc(0, 0, x_dim, y_dim, PI+0.02, TWO_PI-0.02);
 	}
 
-	// DARKNESS
-
+	// DARKNESS: setup
+	let border = 500;
+	strokeWeight(border);
+	stroke(0, 5);
+	noFill();
+	// DARKNESS: draw overlaping
+	for (let i = 0; i < 24; i++) {
+		ellipse(0, 0, x_dim+border, y_dim+border);
+		x_dim += 14;
+		y_dim += 16;
+	}
 	// return coordinates
 	pop();
 }
