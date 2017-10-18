@@ -83,8 +83,8 @@ function draw(){
 	lastButton = button;
 
 	// display
-	drawFire();
 	drawBody(knob, height*.6);
+	drawFire();
 }
 
 // Process incomming data
