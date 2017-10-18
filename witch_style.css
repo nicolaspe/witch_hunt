@@ -5,7 +5,8 @@ html {
 
 body {
 	color: #FFE5CC;
-	font-family: "Helvetica", "Tahoma", "Arial", "sans"
+	font-family: "Helvetica", "Tahoma", "Arial", "sans";
+	font-weight: lighter;
 }
 
 h1 {
