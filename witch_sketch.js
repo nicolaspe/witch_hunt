@@ -45,6 +45,7 @@ function preload(){
 function setup(){
 	createCanvas(860, 280);
 	noStroke();
+	noiseSeed(random(100000));
 
 	// initialize serial communication
 	serial = new p5.SerialPort();
@@ -161,12 +162,13 @@ function drawFire(){
 	translate(470, 233);
 
 	// fire intensity calculations
-	let fire_iterations = int( map(fire_intensity, 0, 100, 2, 18) );
-	let fire_alpha;
+	let wobble = map(random(), 0, 1, -1, 1)
+	let fire_iterations = int( map(fire_intensity, 0, 100, 2, 18) +wobble);
+	let fire_alpha = 7 +wobble*0.5;
 
 	// FIRE: set color
 	noStroke();
-	let fireColor = color(fireHue, fireSat, fireBri, 7);
+	let fireColor = color(fireHue, fireSat, fireBri, fire_alpha);
 	fill(fireColor);
 	// FIRE: draw overlapping
 	let x_dim = 140;
