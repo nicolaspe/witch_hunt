@@ -1,0 +1,17 @@
+html {
+	background: black;
+	padding: 15px;
+}
+
+body {
+	color: #FFE5CC;
+	font-family: "Helvetica", "Tahoma", "Arial", "sans"
+}
+
+h1 {
+	text-align: center;
+}
+
+h1, h2, h3 {
+	color: #FFA64C;
+}
