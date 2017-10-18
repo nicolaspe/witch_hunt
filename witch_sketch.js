@@ -11,9 +11,10 @@ var serial;
 var button = 0;
 var lastButton = 0;
 var fire_intensity = 0;
-var knob = 0;
+var knob = 200;
 var faces = [];
-var body;
+var currFace = 0;
+var bodyAnimation;
 
 function preload(){
 	// load faces
@@ -28,19 +29,22 @@ function preload(){
 	faces[8] = loadImage("imgs/8_billcosby.png");
 	faces[9] = loadImage("imgs/9_donaldtrump.png");
 
-	// load and create body animation
-	// body = loadAnimation("imgs/body_001.png", "imgs/body_003.png");
+	bodyAnimation = loadAnimation("imgs/body_001.png", "imgs/body_003.png");
 }
 
 function setup(){
-	createCanvas(640, 420);
+	createCanvas(windowWidth, windowHeight);
 	noStroke();
+	imageMode(CENTER);
 
 	// initialize serial communication
 	serial = new p5.SerialPort();
 	serial.open(portName);
 	serial.on('data', parseData);			// function to read incomming data
 	serial.on('error', serialError);	// function to catch errors
+
+	// load and create body sprite animation
+	bodyAnimation.frameDelay = 10;
 }
 
 function draw(){
@@ -51,7 +55,7 @@ function draw(){
 	}
 	lastButton = button;
 
-	// animation(body, width/2, height/2);
+	drawBody(mouseX, mouseY);
 }
 
 // Process incomming data
@@ -69,6 +73,14 @@ function serialError(err){
 	// console.log("ERROR:",err);
 }
 
-function drawBody(){
+// display the body, centered at (posX, posY)
+function drawBody(posX, posY){
+	// change coordinates
+	push();
+	translate(posX, posY);
+	animation(bodyAnimation, 0, 0, 20, 20);
+	image(faces[currFace], 0, -400);
 
+	//return to coordinates
+	pop();
 }
